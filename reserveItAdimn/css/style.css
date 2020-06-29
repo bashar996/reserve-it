@@ -1,0 +1,29 @@
+#login-card{
+    width: 450px;
+    margin: 150px auto;
+}
+
+#email{
+    margin-left: 29px;
+}
+
+#navColor{
+    background: #d043c2d8;
+}
+
+#title{
+    color: #f5eeee;
+}
+
+#user-email{
+    background-color: #C36CBB;
+    color: #f5eeee;
+}
+
+#sideBar{
+   background-color: #c36cba4b ;
+}
+
+#listItem{
+    color: #0e0101;
+}
