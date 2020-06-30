@@ -1,1 +1,113 @@
-<h4>info</h4>
+
+<h4 id="hotelitle">Hotel Information</h4>
+<hr>
+<div class="row">
+    <div class="col-lg-5">
+        <h4>Update Hotel imformation</h4>
+        <form >
+            
+            <div class="form-group">
+                <label  for="hotel-name">Hotel Name</label>
+                <input  type="text" class="form-control" id="hotel-name">
+                <div class="invalid-feedback">
+                    please enter a valid name
+                </div>
+            </div>
+            <div class="form-group">
+                <label  for="hotel-location">Hotel Location</label>
+                <input  type="text" class="form-control" id="hotel-location" required>
+                <div class="invalid-feedback">
+                    please enter an Image
+                  </div>
+            </div>
+            <div class="form-group">
+                <label  for="hotel-thumbnail">Thumbnail</label>
+                <input id="input" type="file" class="form-control hotel-thumbnail" id="hotel-thumbnail">
+              <div class="invalid-feedback">
+                please enter an Image
+              </div>
+            </div>
+            <div class="form-group">
+                <img id="selected-thumbnail" width="250" height="150" src="#"/>
+            </div>
+            <div class="form-group">
+                <div class="progress">
+                    <div class="progress-bar" id="upload-progressbar" style="width: 0%" >
+                    </div>
+                </div>
+            </div>  
+            <div>
+                <button type="button" class="btn saveInfo" id="saveBtn">
+                    save
+                </button>
+            </div>
+        </form>
+
+    </div>
+        <div class="col-lg-7">
+            <h4>Registered hotels</h4>
+        </div>
+    </div>
+
+
+<script>
+
+   //valid image types
+   let validImages = ["image/jpeg", "image/png"];
+
+    $(function(ready){
+        $("#selected-thumbnail").hide();//hiding the image feild when empty
+        //previewing the selected image
+        function previewThumpnail(thumpnail){ 
+         if(thumpnail.files && thumpnail.files[0]){
+            
+            var reader = new FileReader();
+
+            reader.onload = function(e){
+            $("#selected-thumbnail").attr('src' , e.target.result);
+            $("#selected-thumbnail").fadeIn();
+         }
+         reader.readAsDataURL(thumpnail.files[0]);
+    }
+}
+//calling the previewThumbnail when there's a change in the input feild
+$(".hotel-thumbnail").change(function(){
+    previewThumpnail(this);
+});
+    });
+    //clickListner for the save button
+    $(".saveInfo").click(function(){
+
+        $("#hotel-name").removeClass("is-invalid");
+        $("#hotel-location").removeClass("is-invalid");
+        $("#hotel-thumbnail").removeClass("is-invalid");
+
+        let hotelName = $("#hotel-name").val();
+        let hotelLoc = $("#hotel-location").val();
+        let hotelThumb = $(".hotel-thumbnail").prop("files [0]");
+
+        //validating files
+        if(!hotelName){
+            $("#hotel-name").addClass("is-invalid");
+            return; //stop excution if it's invalid
+        }
+
+        if(!hotelLoc){
+            $("#hotel-location").addClass("is-invalid");
+            return; //stop excution if it's invalid
+        }
+
+        if(hotelThumb==null){
+            $(".hotel-thumbnail").addClass("is-invalid");
+            return; //stop excution if it's invalid
+        }
+
+        if($.inArray(hotelThumb["type", validImages]<0)){
+            $(".hotel-thumbnail").addClass("is-invalid");
+            return; //stop excution if it's invalid
+
+        }
+
+        //save the new info and upload the image
+    });
+</script>
