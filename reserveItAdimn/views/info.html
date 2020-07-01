@@ -109,5 +109,42 @@ $(".hotel-thumbnail").change(function(){
         }
 
         //save the new info and upload the image
+        let dp = firebase.database().ref("info/"+hotelName);
+
+        dp.once("value").then(function(snapshot){
+
+            if(snapshot.exists()){
+                $("#result").atrr("class","alert alert-danger");
+                $("#result").html("hotel name already in use :/")
+            }else{
+                let name =  hotelThumb["name"];    
+                let extintion = name.substring(name.LastIndexOf("."), name.length);
+                let thumbname = new Date().getTime();
+                let storageRef = firebase.storage().ref(hotelName + "/" + thumbname + extintion);
+                let uploadTask =storageRef.put(hotelThumb);
+                
+                uploadTask.on("state_changed",
+
+                function progress(snapshot){
+                    let percentage = (snapshot.bytesTransfered / snapshot.totalBytes)*100;
+                    $("#upload-progressbar").html(percentage+"%");
+                    $("#upload-progressbar").attr("style" ,"width:" + percentage +"%");
+
+                },
+                function error(err){
+
+                },
+                function complete(){
+                    let thumbnailURL = uploadTask.snapshot.downloadURL; //get the url of the uploaded image
+                    
+                    dp.set();
+                }
+
+                );
+            
+            }
+
+
+        });
     });
 </script>
