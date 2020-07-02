@@ -4,10 +4,10 @@
 <div class="row">
     <div class="col-lg-5">
         <h4>Update Hotel imformation</h4>
-        <form >
+        <form id="info-form">
             
             <div class="form-group">
-                <label  for="hotel-name">Hotel Name</label>
+                <label  for="hotel-name" id="name-label">Hotel Name</label>
                 <input  type="text" class="form-control" id="hotel-name">
                 <div class="invalid-feedback">
                     please enter a valid name
@@ -19,6 +19,10 @@
                 <div class="invalid-feedback">
                     please enter an Image
                   </div>
+            </div>
+            <div class="form-group">
+                <label  for="contact-number">Contact Number</label>
+                <input  type="text" class="form-control" id="contact-number">
             </div>
             <div class="form-group">
                 <label  for="hotel-thumbnail">Thumbnail</label>
@@ -45,7 +49,7 @@
 
     </div>
         <div class="col-lg-7">
-            <h4>Registered hotels</h4>
+            <h4>Current Info</h4>
         </div>
     </div>
 
@@ -53,7 +57,7 @@
 <script>
 
    //valid image types
-   let validImages = ["image/jpeg", "image/png"];
+let validImagetypes= ["image/png", "image/jpg" , "image/jpeg"];
 
     $(function(ready){
         $("#selected-thumbnail").hide();//hiding the image feild when empty
@@ -80,45 +84,35 @@ $(".hotel-thumbnail").change(function(){
 
         $("#hotel-name").removeClass("is-invalid");
         $("#hotel-location").removeClass("is-invalid");
-        $("#hotel-thumbnail").removeClass("is-invalid");
+        $(".hotel-thumbnail").removeClass("is-invalid");
 
         let hotelName = $("#hotel-name").val();
         let hotelLoc = $("#hotel-location").val();
-        let hotelThumb = $(".hotel-thumbnail").prop("files [0]");
-
+        let contactNum = $("#contact-number").val();
+        var hotelThumb = $(".hotel-thumbnail").prop("files")[0];
+ 
         //validating files
-        if(!hotelName){
-            $("#hotel-name").addClass("is-invalid");
-            return; //stop excution if it's invalid
-        }
 
-        if(!hotelLoc){
-            $("#hotel-location").addClass("is-invalid");
-            return; //stop excution if it's invalid
-        }
-
-        if(hotelThumb==null){
-            $(".hotel-thumbnail").addClass("is-invalid");
-            return; //stop excution if it's invalid
-        }
-
-        if($.inArray(hotelThumb["type", validImages]<0)){
+        if($.inArray(hotelThumb["type"], validImagetypes)<0){
             $(".hotel-thumbnail").addClass("is-invalid");
             return; //stop excution if it's invalid
 
-        }
-
+         }
+         let num1 = 0;
+         let num2 = 1;
+        
         //save the new info and upload the image
-        let dp = firebase.database().ref("info/"+hotelName);
+        let dp = firebase.database().ref("info/"+hotelName)
 
         dp.once("value").then(function(snapshot){
 
             if(snapshot.exists()){
-                $("#result").atrr("class","alert alert-danger");
+                $("#result").attr("class","alert alert-danger");
                 $("#result").html("hotel name already in use :/")
+                resetForm();
             }else{
                 let name =  hotelThumb["name"];    
-                let extintion = name.substring(name.LastIndexOf("."), name.length);
+                let extintion = name.substring(name.lastIndexOf("."), name.length);
                 let thumbname = new Date().getTime();
                 let storageRef = firebase.storage().ref(hotelName + "/" + thumbname + extintion);
                 let uploadTask =storageRef.put(hotelThumb);
@@ -126,7 +120,7 @@ $(".hotel-thumbnail").change(function(){
                 uploadTask.on("state_changed",
 
                 function progress(snapshot){
-                    let percentage = (snapshot.bytesTransfered / snapshot.totalBytes)*100;
+                    let percentage = (snapshot.bytesTransferred / snapshot.totalBytes)*100;
                     $("#upload-progressbar").html(percentage+"%");
                     $("#upload-progressbar").attr("style" ,"width:" + percentage +"%");
 
@@ -135,9 +129,27 @@ $(".hotel-thumbnail").change(function(){
 
                 },
                 function complete(){
-                    let thumbnailURL = uploadTask.snapshot.downloadURL; //get the url of the uploaded image
-                    
-                    dp.set();
+                    storageRef.getDownloadURL().then(function(thumbnailURL){
+                    // let thumbnailURL = uploadTask.snapshot.downloadURL; //get the url of the uploaded image
+                    let hotelInfo={
+                        "name":hotelName,
+                        "location":hotelLoc,
+                        "contact":contactNum,
+                        "thumbnail":thumbnailURL,
+                    };
+                    dp.set(hotelInfo, function(err){
+                        if(err){
+                            $("#result").attr("class","alert alert-danger");
+                            $("#result").html(err.message);
+
+                        }
+                        else{
+                            $("#result").attr("class","alert alert-success");
+                            $("#result").html("info updated");
+                        }
+                        resetForm();
+                    });
+                });
                 }
 
                 );
@@ -147,4 +159,13 @@ $(".hotel-thumbnail").change(function(){
 
         });
     });
+//reseting the form after completion
+    function resetForm(){ 
+        $("#info-form")[0].reset();
+        $("#selected-thumbnail").fadeOut();
+        $("#upload-progressbar").html("completed");
+    }
+    //TODO: remove hotel name from info tab
 </script>
+
+
