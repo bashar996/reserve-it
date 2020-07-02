@@ -1,1 +1,80 @@
-<h4>images</h4>
+<h2 id="hotelitle">Hotel Images</h2>
+<hr>
+<div class="row">
+    <div class="col-lg-3">
+        <h4>Add An Image</h4>
+        <form image-form>
+            
+            <div class="form-group">
+                <label  for="image-desc" id="name-label">Imagae description</label>
+                <input  type="text" class="form-control" id="image-desc">
+                <div class="invalid-feedback">
+                    please enter a valid desc
+                </div>
+            </div>
+            <div class="form-group">
+                <label  for="hotel-image">Image</label>
+                <input id="input" type="file" class="form-control hotel-image" id="hotel-image">
+              <div class="invalid-feedback">
+                please enter one of the supported types:(png,jpg,jpeg)
+              </div>
+            </div>
+            <div class="form-group">
+                <img id="selected-image" width="350" height="250" src=""/>
+            </div>
+            <div class="form-group">
+                <div class="progress">
+                    <div class="progress-bar" id="upload-progressbar" style="width: 0%" >
+                    </div>
+                </div>
+            </div>  
+            <div>
+                <button type="button" class="btn saveImage" id="saveBtn">
+                    save
+                </button>
+            </div>
+        </form>
+
+    </div>
+        <div class="col-lg-9">
+            <h4>Exisiting Images</h4>
+        </div>
+    </div>
+
+    <script>
+          $(function(ready){
+        $("#selected-thumbnail").hide();//hiding the image feild when empty
+        //previewing the selected image
+        function previewImage(thumpnail){ 
+         if(thumpnail.files && thumpnail.files[0]){
+            
+            var reader = new FileReader();
+
+            reader.onload = function(e){
+            $("#selected-image").attr('src' , e.target.result);
+            // $("#selected-thumbnail").fadeIn();
+         }
+         reader.readAsDataURL(thumpnail.files[0]);
+    }
+}
+//calling the previewThumbnail when there's a change in the input feild
+$(".hotel-image").change(function(){
+    previewImage(this);
+});
+    });
+
+$(".saveImage").click(()=>
+{   
+    $("#image-desc").removeClass("is-invalid");
+    $(".hotel-image").removeClass("is-invalid");
+
+    let imageDesc = $("#image-desc").val();
+    var hotelImage = $(".hotel-image").prop("files")[0];
+
+    if($.inArray(hotelImage["type"], validImagetypes)<0){
+            $(".hotel-image").addClass("is-invalid");
+            return; //stop excution if it's invalid
+
+         }
+});
+    </script>
