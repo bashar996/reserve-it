@@ -5,7 +5,7 @@ var firebaseConfig = {
     authDomain: "reserve-it-62f58.firebaseapp.com",
     databaseURL: "https://reserve-it-62f58.firebaseio.com",
     projectId: "reserve-it-62f58",
-    storageBucket: "reserve-it-62f58.appspot.com",
+    storageBucket: "reserve-it-62f58.appspot.com", 
     messagingSenderId: "336823090637",
     appId: "1:336823090637:web:8a1d791337d5c7fb555884",
     measurementId: "G-MQ65J7VSYB"
@@ -33,4 +33,17 @@ $("#btn-login").click(function(){
    
 
 });
-    
+
+
+let validImagetypes= ["image/png", "image/jpg" , "image/jpeg"];
+// const auth = firebase.auth();
+// const dp = firebase.firestore();
+
+function switchView(view){
+    $.get({
+        url:view,
+        cache: false,
+    }).then(function(data){
+        $("#container").html(data);
+    });
+}
