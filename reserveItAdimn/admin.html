@@ -31,13 +31,13 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false">
-                    reserveIt@protonmail.com
+                    <!-- reserveIt@protonmail.com -->
                 </button>
 
                 <div class="dropdown-menu"
                 aria-labelledby="user-email">
 
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" id="logout" href="#">
                     logout
                 </a>
 
@@ -50,22 +50,22 @@
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="switchView('views/hotel.html')">
-                        <span class="listItem" id="mainAdmin">Hotels</span> 
+                        <span class="listItem" id="mainAdmin" style="display: none;">Hotels</span> 
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="switchView('views/info.html')">
-                        <span class="listItem" id="hotelAdmin">Basic information</span>
+                        <span class="listItem hotelAdmin" id="hotelAdmin" style="display: none;">Basic information</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="switchView('views/images.html')">
-                        <span class="listItem" id="hotelAdmin">Images</span>
+                        <span class="listItem hotelAdmin" id="hotelAdmin" style="display: none;">Images</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="switchView('views/prices.html')">
-                        <span class="listItem" id="hotelAdmin">Rooms info&availability</span>
+                        <span class="listItem hotelAdmin" id="hotelAdmin" style="display:none;">Rooms info&availability</span>
                     </a>
                 </li>
             </ul>
@@ -84,12 +84,42 @@
         //TODO if user is main Admin show Hotels only
         //TODO if user is hotel admin hide Hotels
         //check auth status
+        var user = firebase.auth().currentUser;
         firebase.auth().onAuthStateChanged(function(user){
+           if(user){
+               //get the user email to show on the top corner
+            user.providerData.forEach(function(profile){
+                 var userEmail = profile.email;
+                 $("#user-email").html(userEmail);
+
+        if(userEmail == "reserveit@protonmail.com")
+        {
+            $(".hotelAdmin").hide();
+            $("#mainAdmin").show();
+
+        }
+        else{
+            $(".hotelAdmin").show();
+            $("#mainAdmin").hide();
+        }
+             });   
+               
+           }
+           
             if(!user){
                 //the user is logged in
                 window.location.href = "index.html"
             }
-        }) 
+
+        }) ;    
+
+
+        
+        $("#logout").click(function(){
+            firebase.auth().signOut();
+        });
+
+
 
     </script>
 </body>
