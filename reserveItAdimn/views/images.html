@@ -76,5 +76,11 @@ $(".saveImage").click(()=>
             return; //stop excution if it's invalid
 
          }
+         //to get a unique file name 
+        let name =  hotelImage["name"];    
+        let extintion = name.substring(name.lastIndexOf("."), name.length);
+        let imageName = new Date().getTime();
+        let storageRef = firebase.storage().ref(hotelName + "/" + imageName + extintion);
+
 });
     </script>
