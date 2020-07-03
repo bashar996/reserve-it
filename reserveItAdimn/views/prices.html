@@ -1,1 +1,49 @@
-<h4>prices</h4>
+<h4 id="hotelitle">Hotel Information</h4>
+<hr>
+<div class="row">
+    <div class="col-lg-5">
+        <h4>Update Hotel imformation</h4>
+        <form >
+            
+            <div class="form-group">
+                <label  for="hotel-name" id="name-label">Hotel Name</label>
+                <input  type="text" class="form-control" id="hotel-name">
+                <div class="invalid-feedback">
+                    please enter a valid name
+                </div>
+            </div>
+            <div class="form-group">
+                <label  for="hotel-location">Hotel Location</label>
+                <input  type="text" class="form-control" id="hotel-location" required>
+                <div class="invalid-feedback">
+                    please enter an Image
+                  </div>
+            </div>
+            <div class="form-group">
+                <label  for="hotel-thumbnail">Thumbnail</label>
+                <input id="input" type="file" class="form-control hotel-thumbnail" id="hotel-thumbnail">
+              <div class="invalid-feedback">
+                please enter an Image
+              </div>
+            </div>
+            <div class="form-group">
+                <img id="selected-thumbnail" width="250" height="150" src="#"/>
+            </div>
+            <div class="form-group">
+                <div class="progress">
+                    <div class="progress-bar" id="upload-progressbar" style="width: 0%" >
+                    </div>
+                </div>
+            </div>  
+            <div>
+                <button type="button" class="btn saveInfo" id="saveBtn">
+                    save
+                </button>
+            </div>
+        </form>
+
+    </div>
+        <div class="col-lg-7">
+            <h4>Current Info</h4>
+        </div>
+    </div>
