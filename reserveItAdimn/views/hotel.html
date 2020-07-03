@@ -1,14 +1,11 @@
-<h4>Hotels information</h4>
-
-<hr>
-
 <div class="row">
     <div class="col-lg-5">
-        <h4>Add a new hotel</h4>
+        <h4 id="hotelitle">Add a new hotel</h4>
+        <hr>
         <form >
             <div class="form-group">
                 <label for="hotel-name">Hotel name</label>
-                <input type="text" class="form-control" id="hotel-name"/>
+                <input type="text" class="form-control hotel-name id="hotel-name"/>
             </div>
             <div class="form-group">
                 <label for="hotel-id">Hotel ID</label>
@@ -18,10 +15,56 @@
                 <label for="hotel-location">Hotel location</label>
                 <input type="text" class="form-control" id="hotel-location"/>
             </div>
+            <div class="form-group">
+                <button type = "button" class="btn" id="saveBtn">
+                    Save
+                </button>
+            </div>
         </form>
+        <div id="result">
+
+        </div>
     </div>
 
     <div class="col-lg-7">
+        <h4>Registered hotels</h4>
 
     </div>
 </div>
+
+<script>
+
+     let Name = $(".hotel-name").val();
+     let hotelID = $("#hotel-id").val();
+     let hotelLocation = $("#hotel-location").val();
+     
+     $("#saveBtn").click(()=>{
+        console.log("Name " + Name);
+        var user = firebase.auth().currentUser;
+        firebase.auth().onAuthStateChanged(function(user){
+            
+               
+               //get the user email to show on the top corner
+            user.providerData.forEach(function(profile){
+                user.updateProfile({
+                displayName: Name,
+                });
+                   
+         
+                
+                
+                
+            
+             });   
+               
+           
+        });
+     
+
+     })
+
+
+
+
+
+</script>
