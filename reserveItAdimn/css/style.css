@@ -24,6 +24,29 @@
    background-color: #c36cba4b ;
 }
 
-#listItem{
+.listItem{
     color: #0e0101;
+    margin: 8px;
 }
+
+#input{
+    padding-top:4px;
+
+    
+}
+
+#saveBtn{
+   
+    background-color: #d043c2d8;
+    color: #f5eeee;
+   
+}
+
+#hotelitle{
+    margin-top: 7px;
+}
+
+#note{
+    color: red;
+}
+
